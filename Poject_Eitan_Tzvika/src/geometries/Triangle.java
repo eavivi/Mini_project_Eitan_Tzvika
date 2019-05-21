@@ -99,8 +99,5 @@ public class Triangle extends Plane {
 		// otherwise
 		return EMPTY_LIST;
 	}
-
-	private boolean positive(double number) {
-		return number >= 0;
-	}
+	
 }

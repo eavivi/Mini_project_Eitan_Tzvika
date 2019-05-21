@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
+
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -58,6 +60,22 @@ public class Sphere extends RadialGeometry {// ביטלתי סטר ועידכנתי בנאי
 		//if p0 is center of sphere then the intersection point is p0 + radius*vectorDirection
 		if (p0.equals(_center))
 			return new ArrayList<Point3D>(Collections.singletonList(p0.add(vectorDirection.product(_radius))));
+		
+		Vector l = _center.subtract(p0);
+		double tm = l.dotProduct(vectorDirection);
+		double d2 = l.dotProduct(l)-tm*tm;
+		if (Math.sqrt(d2) > _radius)
+			return EMPTY_LIST;
+		double th = Math.sqrt(_radius*_radius- d2);
+		double t1 = tm-th;
+		double t2 = tm+th;
+		ArrayList<Point3D> intersectionPoints = new ArrayList<Point3D>();
+		if (t1>0)
+			intersectionPoints.add(p0.add(vectorDirection.product(t1)));
+		if (t2>0)
+			intersectionPoints.add(p0.add(vectorDirection.product(t2)));
+		return intersectionPoints;
+		/*
 		Vector d = p0.subtract(_center);
 		//a,b,c below represent the t that p0+t*vectorDirection intersection the sphere when at^2+bt+c=0
 		double a = vectorDirection.dotProduct(vectorDirection);
@@ -80,5 +98,6 @@ public class Sphere extends RadialGeometry {// ביטלתי סטר ועידכנתי בנאי
 		if (discriminant > 0 && t2 >= 0)
 			intersectionPoints.add(p0.add(vectorDirection.product(t2)));
 		return intersectionPoints;
+		*/
 	}
 }
