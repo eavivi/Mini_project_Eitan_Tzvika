@@ -57,47 +57,41 @@ public class Sphere extends RadialGeometry {// ביטלתי סטר ועידכנתי בנאי
 	public List<Point3D> findIntersections(Ray intersectionRay) {
 		Point3D p0 = intersectionRay.getP0();
 		Vector vectorDirection = intersectionRay.getDirection();
-		//if p0 is center of sphere then the intersection point is p0 + radius*vectorDirection
+		// if p0 is center of sphere then the intersection point is p0 +
+		// radius*vectorDirection
 		if (p0.equals(_center))
 			return new ArrayList<Point3D>(Collections.singletonList(p0.add(vectorDirection.product(_radius))));
-		
+
 		Vector l = _center.subtract(p0);
 		double tm = l.dotProduct(vectorDirection);
-		double d2 = l.dotProduct(l)-tm*tm;
+		double d2 = l.dotProduct(l) - tm * tm;
 		if (Math.sqrt(d2) > _radius)
 			return EMPTY_LIST;
-		double th = Math.sqrt(_radius*_radius- d2);
-		double t1 = tm-th;
-		double t2 = tm+th;
+		double th = Math.sqrt(_radius * _radius - d2);
+		double t1 = tm - th;
+		double t2 = tm + th;
 		ArrayList<Point3D> intersectionPoints = new ArrayList<Point3D>();
-		if (t1>0)
+		if (t1 > 0)
 			intersectionPoints.add(p0.add(vectorDirection.product(t1)));
-		if (t2>0)
+		if (t2 > 0)
 			intersectionPoints.add(p0.add(vectorDirection.product(t2)));
 		return intersectionPoints;
 		/*
-		Vector d = p0.subtract(_center);
-		//a,b,c below represent the t that p0+t*vectorDirection intersection the sphere when at^2+bt+c=0
-		double a = vectorDirection.dotProduct(vectorDirection);
-		double b = 2*vectorDirection.dotProduct(d);
-		double c = d.dotProduct(d) - _radius*_radius;
-		double discriminant = b*b - 4*a*c;
-		//3 case:
-		//discriminant < 0 => the Ray not intersect the sphere
-		//discriminant = 0 => the Ray just touch the sphere
-		//discriminant > 0 => the Ray intersect the sphere in 2 points
-		//but we use just t >= 0
-		//so create list and add just appropriate points
-		if (discriminant < 0)
-			return EMPTY_LIST;
-		ArrayList<Point3D> intersectionPoints = new ArrayList<Point3D>();
-		double t1 = (-b + discriminant)/(2*a);
-		if (t1 >= 0)
-			intersectionPoints.add(p0.add(vectorDirection.product(t1)));
-		double t2 = (-b - discriminant)/(2*a);
-		if (discriminant > 0 && t2 >= 0)
-			intersectionPoints.add(p0.add(vectorDirection.product(t2)));
-		return intersectionPoints;
-		*/
+		 * Vector d = p0.subtract(_center); //a,b,c below represent the t that
+		 * p0+t*vectorDirection intersection the sphere when at^2+bt+c=0 double a =
+		 * vectorDirection.dotProduct(vectorDirection); double b =
+		 * 2*vectorDirection.dotProduct(d); double c = d.dotProduct(d) -
+		 * _radius*_radius; double discriminant = b*b - 4*a*c; //3 case: //discriminant
+		 * < 0 => the Ray not intersect the sphere //discriminant = 0 => the Ray just
+		 * touch the sphere //discriminant > 0 => the Ray intersect the sphere in 2
+		 * points //but we use just t >= 0 //so create list and add just appropriate
+		 * points if (discriminant < 0) return EMPTY_LIST; ArrayList<Point3D>
+		 * intersectionPoints = new ArrayList<Point3D>(); double t1 = (-b +
+		 * discriminant)/(2*a); if (t1 >= 0)
+		 * intersectionPoints.add(p0.add(vectorDirection.product(t1))); double t2 = (-b
+		 * - discriminant)/(2*a); if (discriminant > 0 && t2 >= 0)
+		 * intersectionPoints.add(p0.add(vectorDirection.product(t2))); return
+		 * intersectionPoints;
+		 */
 	}
 }
