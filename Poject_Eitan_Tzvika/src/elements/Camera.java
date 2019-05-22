@@ -65,39 +65,39 @@ public class Camera {
  * @param distance   distance from camera to view plane
  * @param view_width 
  * @param view_height
- * @return
+ * @return ray
  */
 	public Ray constructRayThroughPixel(int Nx, int Ny, int i, int j, double distance, double view_width,
 
 			double view_height) {
 
 		Point3D _Pc = this._p0.add(_vTo.product(distance));// _Pc is the center of the view plane
-		double _Ry = Util.uscale(view_height, 1.0 / Ny);//
+		double _Ry = view_height / Ny;//pixel height
 
-		double _Rx = Util.uscale(view_width, 1.0 / Nx); // _Ry*_Rx the pixel area
+		double _Rx = view_width/ Nx; //  pixel width
 
 		// pixel center calculation:
 
-		double _Yj = Util.uscale((j - Ny / 2.0), _Ry) + _Ry / 2.0;// offset by axis Y on view
+		double _Yj = ((j - Ny / 2)*_Ry) + (_Ry / 2);// offset by axis Y on view
 
-		double _Xi = Util.uscale((i - Nx / 2.0), _Rx) + _Rx / 2.0;// offset by axis X on view
+		double _Xi = ((i - Nx / 2) * _Rx) + (_Rx / 2);// offset by axis X on view
 
 		Point3D _Pij = _Pc;
 
 		if (_Xi != 0)
 
-			_Pij = _Pij.add(this._vRight.product(_Xi)); // _Pij is pixel center calculating
+			_Pij = _Pij.add(_vRight.product(_Xi)); // _Pij is pixel center calculating
 
 		// _Pij=_Pij+(_Xi*_vRight-_Yj*_vUp)
 
 		if (_Yj != 0)
 
-			_Pij = _Pij.add(this._vUp.product(-_Yj));
+			_Pij = _Pij.add(_vUp.product(-_Yj));
 
 
-		Vector _Vij = _Pij.subtract(this._p0).normal();// _Vij is vector from camera to pixel on the view
+		Vector _Vij = _Pij.subtract(_p0).normal();// _Vij is vector from camera to pixel on the view
 
-		return new Ray(this._p0, _Vij);
+		return new Ray(_p0, _Vij);
 
 	}
 }
